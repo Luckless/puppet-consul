@@ -93,6 +93,22 @@ describe 'consul::check' do
             .with_content(/"http" *: *"localhost"/) \
         }
       end
+      describe 'with http and tls_skip_verify' do
+        let(:params) {{
+          'interval'    => '30s',
+          'http' => 'localhost'
+          'tls_skip_verify' => 'true'
+        }}
+        it {
+          should contain_file("/etc/consul/check_my_check.json") \
+            .with_content(/"id" *: *"my_check"/) \
+            .with_content(/"name" *: *"my_check"/) \
+            .with_content(/"check" *: *\{/) \
+            .with_content(/"interval" *: *"30s"/) \
+            .with_content(/"http" *: *"localhost"/) \
+            .with_content(/"tls_skip_verify" *: *"true"/) \
+        }
+      end
       describe 'with http and service_id' do
         let(:params) {{
           'interval'    => '30s',
@@ -271,6 +287,16 @@ describe 'consul::check' do
           should raise_error(Puppet::Error, /script and tcp must not be defined for http checks/)
         }
       end
+      describe 'with both script and tls_skip_verify' do
+        let(:params) {{
+          'script' => 'true',
+          'tls_skip_verify' => 'true',
+          'interval' => '60s'
+        }}
+        it {
+          should raise_error(Puppet::Error, /script and tcp must not be defined with tls_skip_verify/)
+        }
+      end
       describe 'with script but no interval' do
         let(:params) {{
           'script' => 'true',
@@ -293,6 +319,16 @@ describe 'consul::check' do
         }}
         it {
           should raise_error(Puppet::Error, /interval must be defined for tcp, http, and script checks/)
+        }
+      end
+      describe 'with both tcp and tls_skip_verify' do
+        let(:params) {{
+          'tcp' => 'localhost',
+          'tls_skip_verify' => 'true',
+          'interval' => '60s'
+        }}
+        it {
+          should raise_error(Puppet::Error, /script and tcp must not be defined with tls_skip_verify/)
         }
       end
       describe 'with a / in the id' do

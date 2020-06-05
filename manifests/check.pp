@@ -49,38 +49,43 @@
 # [*ttl*]
 #   Value in seconds before the http endpoint considers a failing healthcheck
 #   to be "HARD" down.
+# [*tls_skip_verify*]
+#   enables skip verify of ssl certs for https healthchecks if set to 'true'
 #
+
 define consul::check (
-  $ensure     = present,
-  $http       = undef,
-  $id         = $title,
-  $interval   = undef,
-  $notes      = undef,
-  $script     = undef,
-  $args       = undef,
-  $service_id = undef,
-  $status     = undef,
-  $tcp        = undef,
-  $timeout    = undef,
-  $token      = undef,
-  $ttl        = undef,
+  $ensure          = present,
+  $http            = undef,
+  $id              = $title,
+  $interval        = undef,
+  $notes           = undef,
+  $script          = undef,
+  $args            = undef,
+  $service_id      = undef,
+  $status          = undef,
+  $tcp             = undef,
+  $timeout         = undef,
+  $token           = undef,
+  $ttl             = undef,
+  $tls_skip_verify = undef,
 ) {
   include consul
 
   $basic_hash = {
-    'id'         => $id,
-    'name'       => $name,
-    'ttl'        => $ttl,
-    'http'       => $http,
-    'script'     => $script,
-    'args'       => $args,
-    'tcp'        => $tcp,
-    'interval'   => $interval,
-    'timeout'    => $timeout,
-    'service_id' => $service_id,
-    'notes'      => $notes,
-    'token'      => $token,
-    'status'     => $status,
+    'id'              => $id,
+    'name'            => $name,
+    'ttl'             => $ttl,
+    'http'            => $http,
+    'script'          => $script,
+    'args'            => $args,
+    'tcp'             => $tcp,
+    'interval'        => $interval,
+    'timeout'         => $timeout,
+    'service_id'      => $service_id,
+    'notes'           => $notes,
+    'token'           => $token,
+    'status'          => $status,
+    'tls_skip_verify' => $tls_skip_verify
   }
 
   $check_hash = {

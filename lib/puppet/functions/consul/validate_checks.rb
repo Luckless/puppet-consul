@@ -35,6 +35,10 @@ Puppet::Functions.create_function(:'consul::validate_checks') do
             if (obj.key?("http") || obj.key?("tcp"))
                 raise Puppet::ParseError.new('http and tcp must not be defined for script checks')
             end
+            elsif obj.key?("tls_skip_verify")
+            if (( obj.key?("args") || obj.key?("script") ) || obj.key?("tcp"))
+                raise Puppet::ParseError.new('script and tcp must not be defined with tls_skip_verify')
+            end
             else
             raise Puppet::ParseError.new('One of ttl, script, tcp, or http must be defined.')
             end

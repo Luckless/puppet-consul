@@ -20,6 +20,15 @@ describe 'consul::validate_checks' do
     ]).and_raise_error(Exception) }
   end
 
+  describe 'validate script and tls_skip_verify' do
+    it {should run.with_params([
+      {
+        'tls_skip_verify' => 'true',
+        'script' => 'true'
+      }
+    ]).and_raise_error(Exception) }
+  end
+
   describe 'validate http and tcp' do
     it {should run.with_params([
       {
@@ -89,6 +98,15 @@ describe 'consul::validate_checks' do
     ]).and_raise_error(Exception) }
   end
 
+  describe 'validate tcp and tls_skip_verify' do
+    it {should run.with_params([
+      {
+        'tcp' => 'localhost',
+        'tls_skip_verify' => 'true'
+      }
+    ]).and_raise_error(Exception) }
+  end
+
   describe 'validate tcp check' do
     it {should run.with_params([
       {
@@ -96,5 +114,23 @@ describe 'consul::validate_checks' do
         'interval' => '30s',
       }
     ])}
+  end
+
+  describe 'validate http and tls_skip_verify' do
+    it {should run.with_params([
+      {
+        'http' => 'localhost',
+        'tls_skip_verify' => 'true'
+      }
+    ])}
+  end
+
+  describe 'validate http and ttl' do
+    it {should run.with_params([
+      {
+        'http' => 'localhost',
+        'ttl' => 'true'
+      }
+    ]).and_raise_error(Exception) }
   end
 end
